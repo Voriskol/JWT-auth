@@ -1,8 +1,7 @@
-<script setup lang="ts">
-import Button from 'primevue/button'
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <h1 class="text-3xl font-bold underline">Hello</h1>
-  <Button label="Button" />
+  <div class="max-w-[600px] mx-auto">
+    <router-view />
+  </div>
 </template>

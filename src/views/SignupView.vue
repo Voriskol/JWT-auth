@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
-// import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import Message from 'primevue/message'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
 import Loader from '@/components/Loader/LoaderComponent.vue'
 
 const authStore = useAuthStore()
-// const router = useRouter()
+const router = useRouter()
 
 const email = ref<string>('')
 const password = ref<string>('')
 
 const signup = async () => {
-  await authStore.signup({ email: email.value, password: password.value })
+  await authStore.auth({ email: email.value, password: password.value }, 'signup')
+  router.push('/goods')
 }
 </script>
 
@@ -36,8 +37,11 @@ const signup = async () => {
     </div>
     <Loader v-if="authStore.loader" />
     <div v-else class="flex flex-col gap-3">
-      <Button label="Signup" @click="signup" />
-      <span>Are you already registered? <router-link to="/signin">Sign in</router-link></span>
+      <Button label="Sign up" @click="signup" />
+      <span class=""
+        >Are you already registered?
+        <router-link @click="authStore.error = ''" to="/signin">Sign in</router-link></span
+      >
     </div>
   </form>
 </template>

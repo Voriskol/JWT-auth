@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import { defineStore } from 'pinia'
 import axios from 'axios'
 
-const API_KEY = 'AIzaSyAlEc_0NMnGcgBEiv3eaFxwzM0jyAIaruQ'
+const API_KEY = import.meta.env.VITE_API_KEY_FIREBASE
 
 interface IUserInfo {
   token: string
@@ -23,12 +23,14 @@ export const useAuthStore = defineStore('auth', () => {
     refreshToken: '',
     expiresIn: ''
   })
-  const signup = async (payload: object) => {
+  const auth = async (payload: object, type: string) => {
     error.value = ''
     loader.value = true
+
+    const stringUrl = type === 'signup' ? 'signUp' : 'signInWithPassword'
     try {
       const response = await axios.post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${API_KEY}`,
+        `https://identitytoolkit.googleapis.com/v1/accounts:${stringUrl}?key=${API_KEY}`,
         { ...payload, returnSecureToken: true }
       )
       userInfo.value = {
@@ -38,6 +40,7 @@ export const useAuthStore = defineStore('auth', () => {
         refreshToken: response.data.refreshToken,
         expiresIn: response.data.expiresIn
       }
+      console.log(response.data)
     } catch (err: any) {
       switch (err.response.data.error.message) {
         case 'EMAIL_EXISTS':
@@ -49,12 +52,23 @@ export const useAuthStore = defineStore('auth', () => {
         case 'TOO_MANY_ATTEMPTS_TRY_LATER':
           error.value = 'Too many attempts, please try later'
           break
+        case 'EMAIL_NOT_FOUND':
+          error.value = 'Email not found'
+          break
+        case 'INVALID_PASSWORD':
+          error.value = 'Invalid password'
+          break
+        case 'USER_DISABLED':
+          error.value = 'User disabled'
+          break
         default:
           error.value = 'Something went wrong'
           break
       }
+      throw error.value
+    } finally {
+      loader.value = false
     }
-    loader.value = false
   }
-  return { signup, userInfo, error, loader }
+  return { auth, userInfo, error, loader }
 })

@@ -1,3 +1,3 @@
 <template>
-  <div class="text-3xl">Home regeg</div>
+  <div class="text-3xl">Home</div>
 </template>

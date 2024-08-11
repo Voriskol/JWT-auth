@@ -1,13 +1,14 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useAuthStore } from '@/stores/auth'
-import { useRouter } from 'vue-router'
+// import { useRouter } from 'vue-router'
 import Message from 'primevue/message'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
+import Loader from '@/components/Loader/LoaderComponent.vue'
 
 const authStore = useAuthStore()
-const router = useRouter()
+// const router = useRouter()
 
 const email = ref<string>('')
 const password = ref<string>('')
@@ -34,7 +35,7 @@ const signup = async () => {
       <InputText type="password" v-model="password" placeholder="Password" />
     </div>
     <Loader v-if="authStore.loader" />
-    <div class="flex flex-col gap-3">
+    <div v-else class="flex flex-col gap-3">
       <Button label="Signup" @click="signup" />
       <span>Are you already registered? <router-link to="/signin">Sign in</router-link></span>
     </div>

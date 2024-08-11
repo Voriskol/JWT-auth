@@ -8,6 +8,7 @@ import PrimeVue from 'primevue/config'
 import Aura from '@primevue/themes/aura'
 import App from '@/App.vue'
 import router from './router'
+import '@/api'
 
 const firebaseConfig = {
   apiKey: 'AIzaSyAlEc_0NMnGcgBEiv3eaFxwzM0jyAIaruQ',

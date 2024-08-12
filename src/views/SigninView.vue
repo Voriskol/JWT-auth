@@ -20,7 +20,7 @@ const signin = async () => {
 </script>
 
 <template>
-  <h2 class="text-3xl mx-auto text-center mt-10 mb-3">Sign Up</h2>
+  <h2 class="text-3xl mx-auto text-center mt-10 mb-3">Sign In</h2>
   <Message v-if="authStore.error" severity="warn">{{ authStore.error }}</Message>
   <form class="flex flex-col gap-3 border-2 border-green-400 rounded p-3">
     <div class="flex p-inputgroup flex-1">

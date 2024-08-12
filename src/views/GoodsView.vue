@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { useAuthStore } from '@/stores/auth'
-import axios from 'axios'
+import axiosApiInstance from '@/api'
 import Card from 'primevue/card'
 import Loader from '@/components/Loader/LoaderComponent.vue'
 
@@ -12,14 +11,13 @@ interface ICars {
   }
 }
 
-const store = useAuthStore()
 const cars = ref<ICars>()
 const showLoader = ref(false)
 
 const getCars = async () => {
   showLoader.value = true
   try {
-    const response = await axios.get(
+    const response = await axiosApiInstance.get(
       `https://jwt-auth-f4624-default-rtdb.europe-west1.firebasedatabase.app/cars.json`
     )
     console.log(response.data)

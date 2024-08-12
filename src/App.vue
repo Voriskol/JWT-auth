@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth'
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 const authStore = useAuthStore()
+const router = useRouter()
 const isToken = computed(() => authStore.userInfo.token)
 
 const checkUser = () => {
@@ -12,6 +14,12 @@ const checkUser = () => {
     authStore.userInfo.refreshToken = tokens.refreshToken
     authStore.userInfo.expiresIn = tokens.expiresIn
   }
+}
+
+const logout = () => {
+  authStore.logout()
+  localStorage.removeItem('userTokens')
+  router.push('/signin')
 }
 
 checkUser()
@@ -33,6 +41,13 @@ checkUser()
       class="text-3xl hover:bg-green-400 transition-all rounded-lg p-1"
       v-if="isToken"
       >Cars</router-link
+    >
+    <router-link
+      to="/signin"
+      class="text-3xl hover:bg-green-400 transition-all rounded-lg p-1"
+      v-if="isToken"
+      @click.prevent="logout"
+      >Logout</router-link
     >
   </nav>
   <div class="max-w-[600px] mx-auto">

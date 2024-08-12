@@ -5,8 +5,15 @@ import axios from 'axios'
 import Card from 'primevue/card'
 import Loader from '@/components/Loader/LoaderComponent.vue'
 
+interface ICars {
+  [key: string]: {
+    name: string
+    type: string
+  }
+}
+
 const store = useAuthStore()
-const cars = ref<object>([])
+const cars = ref<ICars>()
 const showLoader = ref(false)
 
 const getCars = async () => {
@@ -29,9 +36,9 @@ onMounted(getCars)
 
 <template>
   <div>
-    <h2>Cars</h2>
+    <h2 class="text-3xl mx-auto text-center mt-10 mb-3">Cars</h2>
     <Loader v-if="showLoader" />
-    <div class="flex flex-column gap-3" v-else>
+    <div class="flex flex-col gap-3" v-else>
       <Card v-for="(car, i) in cars" :key="i">
         <template #title> {{ car.name }} </template>
         <template #subtitle> {{ car.type }} </template>
@@ -39,5 +46,3 @@ onMounted(getCars)
     </div>
   </div>
 </template>
-
-<!-- https://jwt-auth-f4624-default-rtdb.europe-west1.firebasedatabase.app/ -->

@@ -33,6 +33,7 @@ export const useAuthStore = defineStore('auth', () => {
         `https://identitytoolkit.googleapis.com/v1/accounts:${stringUrl}?key=${API_KEY}`,
         { ...payload, returnSecureToken: true }
       )
+
       userInfo.value = {
         token: response.data.idToken,
         email: response.data.email,
@@ -40,7 +41,14 @@ export const useAuthStore = defineStore('auth', () => {
         refreshToken: response.data.refreshToken,
         expiresIn: response.data.expiresIn
       }
-      console.log(response.data)
+      localStorage.setItem(
+        'userTokens',
+        JSON.stringify({
+          token: userInfo.value.token,
+          refreshToken: userInfo.value.refreshToken,
+          expiresIn: userInfo.value.expiresIn
+        })
+      )
     } catch (err: any) {
       switch (err.response.data.error.message) {
         case 'EMAIL_EXISTS':
